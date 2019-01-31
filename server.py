@@ -409,9 +409,9 @@ def getCategoryName(categoryID):
 
 def newItem():
     if request.form['categorySelect']!="Add new category":
-        categoryname = request.form['categorySelect']
+        categoryname = request.form['categorySelect'].strip()
     else:
-        categoryname = request.form['categoryName']
+        categoryname = request.form['categoryName'].strip()
     try:
         category_id = getCategoryID(categoryname)
     except:
@@ -428,9 +428,9 @@ def newItem():
 
 def editItem(item):
     if request.form['categorySelect']!="Add new category":
-        categoryname = request.form['categorySelect']
+        categoryname = request.form['categorySelect'].strip()
     else:
-        categoryname = request.form['categoryName']
+        categoryname = request.form['categoryName'].strip()
     try:
         category_id = getCategoryID(categoryname)
     except:

@@ -27,7 +27,11 @@
 							    <select name="categorySelect" calss = "categorySelect" id ="categorySelect">
 							    	{% if categories !=[] %}
 										{% for c in categories %}
-										   <option>{{c.name}}</option>
+										   {% if c.id == item.category_id %}
+                                            <option selected>{{c.name}}</option> 
+										   {% else %}
+										   	<option>{{c.name}}</option>
+										   {% endif %}}
 										{% endfor %}
 									{% endif %}   
 								    <option>Add new category</option>
