@@ -1,0 +1,137 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+<div class="container">
+	<div class = 'flash'>
+	      {% with messages = get_flashed_messages() %}
+	      {% if messages %}
+	          
+	        
+	        {% for message in messages %}
+	            <p> <strong><h5>  {{ message }}</h5> </strong> </p>
+	        {% endfor %}
+	        
+	        {% endif %}
+	    {% endwith %}
+
+	</div>
+
+	<div class="row">
+		<div class="col-md-2" id ="head_left">
+			<div>
+				<h2>Categories</h2>
+			</div>
+			<div>
+				<a href="/catalog"><h6>All items</h6></a>
+			</div>
+			{% if categories !=[] %}
+				{% for c in categories %}
+					<div>
+						<a href="{{url_for('loadCategoryItems',catalog_id=c.id)}}"><h6>{{c.name}}</h6></a>
+					</div>
+				{% endfor %}
+			{% endif %}	
+		</div>  	
+		<div class="col-md-10" id ="head_right">
+			<div>
+				<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal2">Add Item</button>
+				<div class="modal fade" id="myModal2" role="dialog">
+					<div class="modal-dialog">
+					    <!-- Modal content-->
+				        <div class="modal-content">
+					        <div class="modal-header">
+					        	<h1 class="modal-title">Add new item</h1>
+					        </div>
+					        <div class="modal-body">
+					        	<form class="form-horizontal" action="/catalog" method="post" onsubmit="return validateForm()">
+								    <div class="form-group">
+								      <label class="control-label col-sm-2">Title:</label>
+								      <div class="col-sm-10 inputbox">
+								        <input type="text" class="form-control" id="title" name="title" maxlength="80" required>
+								      </div>
+								    </div>
+								    <div class="form-group">
+								      <label class="control-label col-sm-2">Description:</label>
+								      <div class="col-sm-10 inputbox">          
+								        <textarea class="form-control" id="description" name="description" rows =5 maxlength="500" required></textarea>
+								      </div>
+								    </div>
+								    <div class="form-group">    
+									      	<label class="control-label  col-sm-2">Category:</label>
+									        <div class="col-sm-10" id ="btntext">
+											    <select name="categorySelect" calss = "categorySelect" id ="categorySelect">
+											    	{% if categories !=[] %}
+														{% for c in categories %}
+														   <option>{{c.name}}</option>
+														{% endfor %}
+													{% endif %}   
+												    <option>Add new category</option>
+											    </select>
+										    </div>
+								    </div>
+								    <div class="form-group">
+								    	<label class="control-label col-sm-2" id = "categoryLable">New category:</label>
+								    	<div class="col-sm-10 inputbox">
+								    		<input type="text" class="form-control" id="categoryName" name="categoryName" maxlength="250">
+							    		</div>
+								    </div>
+								    <div class="form-group">        
+								      <div class="col-sm-offset-2 col-sm-10">
+								        <button type="submit" class="btn btn-default">Submit</button>
+								      </div>
+								    </div>
+							  </form>
+					        </div>
+					        <div class="modal-footer">
+					        	<button type="button" class="button4" data-dismiss="modal"><h4>Cancel</h4></button>
+					        </div>
+					    </div>
+					</div>
+				</div>
+			</div>
+			<div id = "itemTitle">
+				<h2>{{rightmsg}}</h2>
+			</div>
+			{% if items !=[] %}
+				{% for i in items %}
+					<div>
+						<a href="{{url_for('loadItem',item_id=i.id)}}"><h6>{{i.title}}</h6></a>
+						<h4>({{getCategoryName(i.category_id)}})</h4>
+						{% if i.user_id == user_id %}
+							<a href = "{{url_for('editItem',item_id=i.id)}}"><h4>[Edit|</h4></a>
+							<a href = "{{url_for('deleteItem',item_id=i.id)}}"><h4>Delete]</h4></a>
+						{% endif %}
+					</div>
+				{% endfor %}
+			{% endif %}	
+		</div>
+	</div>
+</div>
+<script>
+function validateForm() {
+  if (document.getElementById("categorySelect").innerText == "Select") {
+    alert("Please select category");
+    return false;
+  }
+}
+
+
+function myFunction() {
+  //document.getElementById("btnvalue").innerText=this.innerText;
+  if (this[this.selectedIndex].innerText=="Add new category")
+  {
+  	$("#categoryLable").show()
+  	$("#categoryName").show()
+  }else{
+  	$("#categoryLable").hide()
+  	$("#categoryName").hide()
+  }  	
+}
+
+
+droplists = document.getElementById("categorySelect");
+droplists.addEventListener("click", myFunction);
+$("#categoryLable").hide()
+$("#categoryName").hide()
+</script>
+{% endblock %}

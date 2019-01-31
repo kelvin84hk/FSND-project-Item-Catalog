@@ -1,0 +1,22 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+<div class="container">
+<div class="row">
+		<div class="col-md-2">
+		</div>
+		<div class="col-md-10" id ="show_right">
+			<h2>{{item.title}}</h2>
+			<br>
+			<h5>Description: {{item.description}}</h5>
+			<br>
+			<a href="/catalog"><h4>[Back]</h4></a>
+			{% if IsLogedIn %}
+				{% if item.user_id == user_id %}
+					<a href = "{{url_for('editItem',item_id=item.id)}}"><h4>[Edit</h4></a>
+					<a href = "{{url_for('deleteItem',item_id=item.id)}}"><h4>|Delete]</h4></a>
+			    {% endif %}		
+			{% endif %}
+		</div>
+</div>
+{% endblock %}

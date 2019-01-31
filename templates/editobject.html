@@ -1,0 +1,79 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+<div class="container">
+<div class="row">
+		<div class="col-md-2">
+		</div>
+		<div class="col-md-10" id ="show_right">
+			<h2>Edit Item</h2>
+			<br>
+			<form class="form-horizontal" action="{{url_for('editItem',item_id=item.id)}}" method="post" onsubmit="return validateForm()">
+				    <div class="form-group">
+				      <label class="control-label col-sm-2">Title:</label>
+				      <div class="col-sm-10 inputbox">
+				        <input type="text" class="form-control" id="title" name="title" maxlength="80" required value = "{{item.title}}">
+				      </div>
+				    </div>
+				    <div class="form-group">
+				      <label class="control-label col-sm-2">Description:</label>
+				      <div class="col-sm-10 inputbox">          
+				        <textarea class="form-control" id="description" name="description" rows =5 maxlength="500" required>{{item.description}}</textarea>
+				      </div>
+				    </div>
+				    <div class="form-group">    
+					      	<label class="control-label  col-sm-2">Category:</label>
+					        <div class="col-sm-10" id ="btntext">
+							    <select name="categorySelect" calss = "categorySelect" id ="categorySelect">
+							    	{% if categories !=[] %}
+										{% for c in categories %}
+										   <option>{{c.name}}</option>
+										{% endfor %}
+									{% endif %}   
+								    <option>Add new category</option>
+							    </select>
+						    </div>
+				    </div>
+				    <div class="form-group">
+				    	<label class="control-label col-sm-2" id = "categoryLable">New category:</label>
+				    	<div class="col-sm-10 inputbox">
+				    		<input type="text" class="form-control" id="categoryName" name="categoryName" maxlength="250">
+			    		</div>
+				    </div>
+				    <div class="form-group">        
+				      <div class="col-sm-offset-2 col-sm-10">
+				        <button type="submit" class="btn btn-default"><h4>Submit</h4></button>
+				        <a href ="/catalog"><h4>[Cancel]</h4></a>
+				      </div>
+				    </div>
+			  </form>
+		</div>
+</div>
+<script >
+function validateForm() {
+  if (document.getElementById("categorySelect").innerText == "Select") {
+    alert("Please select category");
+    return false;
+  }
+}
+
+
+function myFunction() {
+  //document.getElementById("btnvalue").innerText=this.innerText;
+  if (this[this.selectedIndex].innerText=="Add new category")
+  {
+  	$("#categoryLable").show()
+  	$("#categoryName").show()
+  }else{
+  	$("#categoryLable").hide()
+  	$("#categoryName").hide()
+  }  	
+}
+
+
+droplists = document.getElementById("categorySelect");
+droplists.addEventListener("click", myFunction);
+$("#categoryLable").hide()
+$("#categoryName").hide()
+</script>
+{% endblock %}

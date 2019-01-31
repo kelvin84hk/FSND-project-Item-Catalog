@@ -1,0 +1,52 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+<div class="container">
+	<div class = 'flash'>
+	      {% with messages = get_flashed_messages() %}
+	      {% if messages %}
+	          
+	        
+	        {% for message in messages %}
+	            <p> <strong><h5>  {{ message }}</h5> </strong> </p>
+	        {% endfor %}
+	        
+	        {% endif %}
+	    {% endwith %}
+
+	</div>
+
+	<div class="row">
+		<div class="col-md-2" id ="head_left">
+			<div>
+				<h2>Categories</h2>
+			</div>
+			<div>
+				<a href="/catalog"><h6>All items</h6></a>
+			</div>
+			{% if categories !=[] %}
+				{% for c in categories %}
+					<div>
+						<a href="{{url_for('loadCategoryItems',catalog_id=c.id)}}"><h6>{{c.name}}</h6></a>
+					</div>
+				{% endfor %}
+			{% endif %}	
+		</div>
+		<div class="col-md-10" id ="head_right">
+			<div id = "itemTitle">
+				<h2>{{rightmsg}}</h2>
+			</div>
+			{% if items !=[] %}
+				{% for i in items %}
+					<div>
+						<a href="{{url_for('loadItem',item_id=i.id)}}"><h6>{{i.title}}</h6></a>
+						<h4>[{{getCategoryName(i.category_id)}}]</h4>
+					</div>
+				{% endfor %}
+			{% endif %}
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}
