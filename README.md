@@ -30,4 +30,32 @@ To start on this project, you'll need database software (provided by a Linux vir
  
 8. From your terminal run the command `python server.py`
 
+9. Open `http://localhost:8000/` in your Chrome browser.
+
 ### Website design
+
+10. Log in is required for adding new items, edit and delete existing items. To log in, click `Click to Log In` button and then choose using google or facebook account for authentication.
+
+11. After logged in, click `Add Item` and then fill in the detail to create new item.
+
+12. For items creadted by your account, you can click `Edit` to edit the details or `Delete` to delete an item.
+
+13. You can view all items by clicking `All items` or items in one category by clicking its name on the left.
+
+### JSON Api
+
+14. For retrieve all exiting categories in the website: 
+```
+http://localhost:8000/catalog/allcategories/JSON
+```
+15. For retrieve all exiting items in the website: 
+```
+http://localhost:8000/catalog/allitems/JSON
+```
+
+### Create Empty Database (Optional)
+
+16. Delete `catalog.db` in your Clone folder and then run 
+```
+python database_setup.py
+```
