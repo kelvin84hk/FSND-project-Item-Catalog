@@ -58,7 +58,6 @@
 		if (authResult['code']){
 			$('#signinButton').attr('style','display: none');
 			$('#fbButton').attr('style','display: none');
-			//$("#myModal").attr('style','display: none');
 			$.ajax({
 				type: 'POST',
 				url: '/gconnect?state={{STATE}}',

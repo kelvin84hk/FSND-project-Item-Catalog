@@ -58,10 +58,9 @@ h6 {
 
 }
 
-
-#head_left{
-	border-right-style: groove;
-	border-right-width: 5px;
+#head_right{
+	border-left-style: groove;
+	border-left-width: 5px;
 	height: 100%;
 }
 

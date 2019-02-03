@@ -10,52 +10,50 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = 'user'
 
-    id = Column(Integer,primary_key = True)
-    name = Column(String(250),nullable= False)
-    email = Column(String(250),nullable= False)
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable=False)
+    email = Column(String(250), nullable=False)
     picture = Column(String(250))
 
 
 class Category(Base):
     __tablename__ = 'category'
-   
+
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
-    user_id= Column(Integer,ForeignKey('user.id'))
-    user= relationship(User)
-
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
 
     @property
     def serialize(self):
-       """Return object data in easily serializeable format"""
-       return {
-           'category'         : self.name,
-           'category_id'      : self.id,
-       }
+        """Return object data in easily serializeable format"""
+        return {
+           'category': self.name,
+           'category_id': self.id,
+        }
 
 
 class catalogItem(Base):
     __tablename__ = 'catalog_item'
 
-
-    title =Column(String(80), nullable = False)
-    id = Column(Integer, primary_key = True)
+    title = Column(String(80), nullable=False)
+    id = Column(Integer, primary_key=True)
     description = Column(String(500))
-    category_id = Column(Integer,ForeignKey('category.id'))
+    category_id = Column(Integer, ForeignKey('category.id'))
     category = relationship(Category)
-    user_id= Column(Integer,ForeignKey('user.id'))
-    user= relationship(User)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
 
     @property
     def serialize(self):
-       """Return object data in easily serializeable format"""
-       return {
-           'title'        : self.title,
-           'description'  : self.description,
-           'item_id'         : self.id,
-           'category_id' : self.category_id
-       }
+        """Return object data in easily serializeable format"""
+        return {
+           'title': self.title,
+           'description': self.description,
+           'item_id': self.id,
+           'category_id': self.category_id
+        }
 
 
-engine = create_engine('sqlite:///catalog.db') 
+engine = create_engine('sqlite:///catalog.db')
 Base.metadata.create_all(engine)
