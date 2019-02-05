@@ -76,7 +76,7 @@ def loadMain():  # show all items
 
 
 @app.route('/catalog/<int:catalog_id>', methods=['GET'])
-def loadCategoryItems(catalog_id):
+def loadCategoryItems(catalog_id):  # show items for a specific category
     categories = session.query(Category)
     category = session.query(
         Category).filter_by(id=catalog_id).one()
@@ -112,7 +112,7 @@ def loadCategoryItems(catalog_id):
 
 
 @app.route('/item/<int:item_id>', methods=['GET'])
-def loadItem(item_id):
+def loadItem(item_id):  # show detail of a specific item
     item = session.query(catalogItem).filter_by(id=item_id).one()
     if 'username' not in login_session:
         return render_template(
@@ -129,20 +129,17 @@ def loadItem(item_id):
             IsLogedIn=True)
 
 
-@app.route('/catalog/allitems/JSON')
-def loadItemJSON():
-    items = session.query(catalogItem).all()
-    return jsonify(Items=[i.serialize for i in items])
-
-
-@app.route('/catalog/allcategories/JSON')
-def loadCategoryJSON():
+@app.route('/catalog/all/JSON')
+def loadAllJSON():  # shown all details in JSON format
     categories = session.query(Category).all()
-    return jsonify(Categories=[c.serialize for c in categories])
+    items = session.query(catalogItem).all()
+    return jsonify(
+        Items=[i.serialize for i in items],
+        Categories=[c.serialize for c in categories])
 
 
 @app.route('/edititem/<int:item_id>', methods=['GET', 'POST'])
-def editItem(item_id):
+def editItem(item_id):  # edit an item
     if 'username' not in login_session:
         response = make_response(
          json.dumps(
@@ -174,7 +171,7 @@ def editItem(item_id):
 
 
 @app.route('/deleteItem/<int:item_id>', methods=['GET', 'POST'])
-def deleteItem(item_id):
+def deleteItem(item_id):  # delete an item
     if 'username' not in login_session:
         response = make_response(
          json.dumps(
@@ -206,7 +203,7 @@ def deleteItem(item_id):
 
 
 @app.route('/gconnect', methods=['POST'])
-def gconnect():
+def gconnect():  # log in through google api
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state parameter'), 401)
         response.headers['Content-Type'] = 'application/json'
@@ -291,7 +288,7 @@ def gconnect():
 
 
 @app.route('/gdisconnect')
-def gdisconnect():
+def gdisconnect():  # log out after logged in through google api
     # Only disconnect a connected user.
     access_token = login_session.get('access_token')
     if access_token is None:
@@ -314,7 +311,7 @@ def gdisconnect():
 
 
 @app.route('/disconnect')
-def disconnect():
+def disconnect():  # log out after logged in
     if 'provider' in login_session:
         if login_session['provider'] == 'google':
             gdisconnect()
@@ -336,7 +333,7 @@ def disconnect():
 
 
 @app.route('/fbconnect', methods=['POST'])
-def fbconnect():
+def fbconnect():  # log in through facebook api
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state parameter.'), 401)
         response.headers['Content-Type'] = 'application/json'
@@ -415,7 +412,7 @@ def fbconnect():
 
 
 @app.route('/fbdisconnect')
-def fbdisconnect():
+def fbdisconnect():  # log out after logged in through google api
     facebook_id = login_session['facebook_id']
     # The access token must me included to successfully logout
     access_token = login_session['access_token']
@@ -426,7 +423,7 @@ def fbdisconnect():
     return "you have been logged out"
 
 
-def createUser(login_session):
+def createUser(login_session):  # creat new user in database
     newUser = User(
         name=login_session['username'],
         email=login_session['email'],
@@ -437,12 +434,12 @@ def createUser(login_session):
     return user.id
 
 
-def getUserInfo(user_id):
-    user = session.query(User).filter_by(id=user_id).one()
+def getUserInfo(user_id):  # get user info from its user id
+    user = session.query(User).filter_by(id=user_id).first()
     return user
 
 
-def getUserID(email):
+def getUserID(email):  # get user ID from its email
     user = session.query(User).filter_by(email=email).first()
     if user is not None:
         return user.id
@@ -450,7 +447,7 @@ def getUserID(email):
         return None
 
 
-def getCategoryID(categoryName):
+def getCategoryID(categoryName):  # get category ID from its name
     category = session.query(
         Category).filter(
         func.lower(Category.name) == func.lower(categoryName)).first()
@@ -460,7 +457,7 @@ def getCategoryID(categoryName):
         return None
 
 
-def getCategoryName(categoryID):
+def getCategoryName(categoryID):  # get category name from its ID
     category = session.query(Category).filter_by(id=categoryID).one()
     return category.name
 
@@ -496,7 +493,7 @@ def newItem():
     return None
 
 
-def editItem(item):
+def editItem(item):  # edit an item
     if request.form['categorySelect'] != "Add new category":
         categoryname = request.form['categorySelect'].strip()
     else:
@@ -520,7 +517,7 @@ def editItem(item):
     return None
 
 
-def deleteItem(item):
+def deleteItem(item):  # delete an item
     category_id = item.category_id
     session.delete(item)
     session.commit()
