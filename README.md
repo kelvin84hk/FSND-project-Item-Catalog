@@ -44,18 +44,14 @@ To start on this project, you'll need database software (provided by a Linux vir
 
 ### JSON Api
 
-14. For retrieve all exiting categories in the website: 
+14. For retrieve all exiting information in the website: 
 ```
-http://localhost:8000/catalog/allcategories/JSON
-```
-15. For retrieve all exiting items in the website: 
-```
-http://localhost:8000/catalog/allitems/JSON
+http://localhost:8000/catalog/all/JSON
 ```
 
 ### Create Empty Database (Optional)
 
-16. Delete `catalog.db` in your Clone folder and then run 
+15. Delete `catalog.db` in your Clone folder and then run 
 ```
 python database_setup.py
 ```
