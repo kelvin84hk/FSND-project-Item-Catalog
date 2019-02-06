@@ -138,6 +138,22 @@ def loadAllJSON():  # shown all details in JSON format
         Categories=[c.serialize for c in categories])
 
 
+@app.route('/catalog/<int:category_id>/JSON')
+def loadCategoryJSON(category_id):  # shown items of a category in JSON format
+    items = session.query(catalogItem).filter_by(category_id=category_id)
+    return jsonify(
+        Items=[i.serialize for i in items],
+        )
+
+
+@app.route('/item/<int:item_id>/JSON')
+def loadItemJSON(item_id):  # shown detail of an item in JSON format
+    items = session.query(catalogItem).filter_by(id=item_id)
+    return jsonify(
+        Items=[i.serialize for i in items],
+        )
+
+
 @app.route('/edititem/<int:item_id>', methods=['GET', 'POST'])
 def editItem(item_id):  # edit an item
     if 'username' not in login_session:
